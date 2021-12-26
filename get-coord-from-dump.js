@@ -18,7 +18,14 @@ setInterval(() => {
 
 lineReader.on('line', (line) => {
     ln++
-    if (line.length <= 2) return
+    if (line.length <= 2) {
+        console.log('WRITTEN')
+        fs.appendFile('coordinateLookup.json', bst, (err) => {
+            console.log(err)
+        })
+        bst = ''
+        return
+    }
     const obj = JSON.parse(line.substring(0, line.length - 1)) //excludes delimiting comma
     out = {
         i: '',
@@ -36,7 +43,7 @@ lineReader.on('line', (line) => {
         return null
     }
     ve++
-    if (ve % 1000) {
+    if (ve % 100) {
         bst += JSON.stringify(out)
         bst += ',\n'
         return null
